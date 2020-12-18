@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.Icetea.dao.IUserInfoDao">
+
+    <resultMap id="UserInfoMap" type="com.example.Icetea.entry.UserInfo">
+        <id property="id" column="tid" jdbcType="VARCHAR"/>
+        <result property="userId" column="tuser_id" jdbcType="VARCHAR"/>
+        <result property="name" column="tname" jdbcType="VARCHAR"/>
+        <result property="sex" column="tsex" jdbcType="VARCHAR"/>
+        <result property="age" column="tage" jdbcType="INTEGER"/>
+        <result property="birthday" column="tbirthday" jdbcType="DATE"/>
+        <result property="phone" column="tphone" jdbcType="INTEGER"/>
+        <result property="eMail" column="te_mail" jdbcType="VARCHAR"/>
+        <result property="address" column="taddress" jdbcType="VARCHAR"/>
+        <result property="idCard" column="tid_card" jdbcType="VARCHAR"/>
+        <result property="isDelete" column="tis_delete" jdbcType="VARCHAR"/>
+        <result property="createUser" column="tcreate_user" jdbcType="VARCHAR"/>
+        <result property="createTime" column="tcreate_time" jdbcType="DATE"/>
+        <result property="lastModifyUser" column="tlast_modify_user" jdbcType="VARCHAR"/>
+        <result property="lastModifyTime" column="tlast_modify_time" jdbcType="DATE"/>
+    </resultMap>
+
+
+    <insert id="addUserInfo" parameterType="java.util.List">
+        insert into user_info
+        (
+        tid,
+        tuser_id,
+        tname,
+        tsex,
+        tage,
+        tbirthday,
+        tphone,
+        te_mail,
+        taddress,
+        tid_card,
+        tis_delete,
+        tcreate_user,
+        tcreate_time,
+        tlast_modify_user,
+        tlast_modify_time
+        )
+        value
+        <foreach collection="list" index="index" item="item" separator=",">
+            (
+            #{item.id},
+            #{item.userId},
+            #{item.name},
+            #{item.sex},
+            #{item.age},
+            #{item.birthday},
+            #{item.phone},
+            #{item.eMail},
+            #{item.address},
+            #{item.idCard},
+            #{item.isDelete},
+            #{item.createUser},
+            #{item.createTime},
+            #{item.lastModifyUser},
+            #{item.lastModifyTime}
+            )
+        </foreach>
+    </insert>
+
+</mapper>

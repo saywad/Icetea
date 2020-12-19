@@ -3,14 +3,13 @@
 
 <mapper namespace="com.example.Icetea.dao.IUserInfoDao">
 
-    <resultMap id="UserInfoMap" type="com.example.Icetea.entry.UserInfo">
+    <resultMap id="UserInfoMap" type="com.example.Icetea.dto.UserInfoDto">
         <id property="id" column="tid" jdbcType="VARCHAR"/>
-        <result property="userId" column="tuser_id" jdbcType="VARCHAR"/>
         <result property="name" column="tname" jdbcType="VARCHAR"/>
         <result property="sex" column="tsex" jdbcType="VARCHAR"/>
         <result property="age" column="tage" jdbcType="INTEGER"/>
         <result property="birthday" column="tbirthday" jdbcType="DATE"/>
-        <result property="phone" column="tphone" jdbcType="INTEGER"/>
+        <result property="phone" column="tphone" jdbcType="VARCHAR"/>
         <result property="eMail" column="te_mail" jdbcType="VARCHAR"/>
         <result property="address" column="taddress" jdbcType="VARCHAR"/>
         <result property="idCard" column="tid_card" jdbcType="VARCHAR"/>
@@ -21,12 +20,11 @@
         <result property="lastModifyTime" column="tlast_modify_time" jdbcType="DATE"/>
     </resultMap>
 
-
+    <!-- 批量新增用户信息 -->
     <insert id="addUserInfo" parameterType="java.util.List">
         insert into user_info
         (
         tid,
-        tuser_id,
         tname,
         tsex,
         tage,
@@ -45,7 +43,6 @@
         <foreach collection="list" index="index" item="item" separator=",">
             (
             #{item.id},
-            #{item.userId},
             #{item.name},
             #{item.sex},
             #{item.age},
@@ -62,5 +59,57 @@
             )
         </foreach>
     </insert>
+
+    <!-- 修改用户信息 -->
+    <update id="updateUserInfo" parameterType="com.example.Icetea.entry.UserInfo">
+        update user_info
+        <set>
+            tname = #{name},
+            tsex = #{sex},
+            tage = #{age},
+            tbirthday = #{birthday},
+            tphone = #{phone},
+            te_mail = #{eMail},
+            taddress = #{address},
+            tid_card = #{idCard},
+            tlast_modify_user = #{lastModifyUser},
+            tlast_modify_time = #{lastModifyTime}
+        </set>
+        where tis_delete = 'N'
+        <if test="id != null and id != ''">
+            and tid = #{id}
+        </if>
+    </update>
+
+    <!-- 批量删除用户信息 -->
+    <update id="deleteUserInfo" parameterType="com.example.Icetea.dto.UserInfoDto">
+        update user_info
+        set tis_delete = 'Y',
+            tlast_modify_user = #{lastModifyUser},
+            tlast_modify_time = #{lastModifyTime}
+        where tis_delete = 'N'
+            and tid in
+            <foreach collection="deleteIds" index="index" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+    </update>
+
+    <!-- 查询用户信息列表 -->
+    <select id="queryUserInfoList" resultMap="UserInfoMap">
+        select * from user_info
+        where tis_delete = 'N'
+    </select>
+
+    <!-- 根据id查询用户信息 -->
+    <select id="queryUserInfoByUserId" resultMap="UserInfoMap" parameterType="java.util.List">
+        select * from user_info
+        where tis_delete = 'N'
+        <if test="list != null and list.size() != 0">
+            and tid in
+            <foreach collection="list" index="index" item="item" open="(" close=")" separator=",">
+                #{item}
+            </foreach>
+        </if>
+    </select>
 
 </mapper>

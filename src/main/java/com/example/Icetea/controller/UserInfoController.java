@@ -16,7 +16,31 @@ public class UserInfoController {
     private IUserInfoService userInfoService;
 
     /**
-     * 新增用户信息
+     * 查询用户信息列表
+     *
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    @GetMapping(value = "queryUserInfoList")
+    public Response queryUserInfoList(@RequestParam(name = "page") int page,
+                                      @RequestParam(name = "pageSize") int pageSize){
+        return userInfoService.queryUserInfoList(page, pageSize);
+    }
+
+    /**
+     * 根据id查询用户信息（批量）
+     *
+     * @param ids
+     * @return
+     */
+    @PostMapping(value = "queryUserInfoByUserId")
+    public Response queryUserInfoByUserId(@RequestBody List<String> ids){
+        return userInfoService.queryUserInfoByUserId(ids);
+    }
+
+    /**
+     * 批量新增用户信息
      *
      * @param list list
      */
@@ -26,12 +50,22 @@ public class UserInfoController {
     }
 
     /**
-     * 新增用户信息
+     * 修改用户信息
      *
-     * @param id id
+     * @param userInfo userInfo
      */
-    @PostMapping(value = "test")
-    public Response test(@RequestParam(name = "id") String id){
-        return new Response(id);
+    @PostMapping(value = "updateUserInfo")
+    public Response updateUserInfo(@RequestBody UserInfo userInfo){
+        return userInfoService.updateUserInfo(userInfo);
+    }
+
+    /**
+     * 批量删除用户信息
+     *
+     * @param ids ids
+     */
+    @PostMapping(value = "deleteUserInfo")
+    public Response deleteUserInfo(@RequestBody List<String> ids){
+        return userInfoService.deleteUserInfo(ids);
     }
 }

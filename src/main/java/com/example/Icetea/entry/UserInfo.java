@@ -1,5 +1,8 @@
 package com.example.Icetea.entry;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 public class UserInfo {
@@ -7,11 +10,6 @@ public class UserInfo {
    * 主键id
    */
   private String id;
-
-  /**
-   * 用户id
-   */
-  private String userId;
 
   /**
    * 姓名
@@ -26,17 +24,19 @@ public class UserInfo {
   /**
    * 年龄
    */
-  private long age;
+  private int age;
 
   /**
    * 出生日期
    */
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
+  @JsonFormat(pattern = "yyyy-MM-dd")
   private Date birthday;
 
   /**
    * 电话
    */
-  private long phone;
+  private String phone;
 
   /**
    * 邮箱
@@ -87,16 +87,6 @@ public class UserInfo {
     this.id = id;
   }
 
-
-  public String getUserId() {
-    return userId;
-  }
-
-  public void setUserId(String userId) {
-    this.userId = userId;
-  }
-
-
   public String getName() {
     return name;
   }
@@ -114,15 +104,13 @@ public class UserInfo {
     this.sex = sex;
   }
 
-
-  public long getAge() {
+  public int getAge() {
     return age;
   }
 
-  public void setAge(long age) {
+  public void setAge(int age) {
     this.age = age;
   }
-
 
   public Date getBirthday() {
     return birthday;
@@ -132,14 +120,13 @@ public class UserInfo {
     this.birthday = birthday;
   }
 
-  public long getPhone() {
+  public String getPhone() {
     return phone;
   }
 
-  public void setPhone(long phone) {
+  public void setPhone(String phone) {
     this.phone = phone;
   }
-
 
   public String getEMail() {
     return eMail;
